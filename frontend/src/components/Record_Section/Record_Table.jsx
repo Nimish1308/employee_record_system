@@ -2,7 +2,7 @@ import React from 'react'
 import { Button } from 'react-bootstrap'
 import { NavLink } from 'react-router'
 
-const Record_Table = () => {
+const Record_Table = ({ records, handleDeleteRecord, btnFilter }) => {
     return (
         <>
             <table className="table align-middle mb-0 bg-white container" id='table_body'>
@@ -18,45 +18,55 @@ const Record_Table = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>
-                            <div className="d-flex align-items-center">
-                                <img
-                                    src="https://mdbootstrap.com/img/new/avatars/8.jpg"
-                                    alt=""
-                                    style={{
-                                        width: "45px",
-                                        height: "45px",
-                                    }}
-                                    className="rounded-circle"
-                                />
-                                <div className="ms-3">
-                                    <p className="fw-bold mb-1">John Doe</p>
-                                    <p className="text-muted mb-0">john.doe@gmail.com</p>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <p className="fw-normal mb-1">Software engineer</p>
-                            <p className="text-muted mb-0">IT department</p>
-                        </td>
-                        <td>
-                            <span className="badge badge-success rounded-pill d-inline">Active</span>
-                        </td>
-                        <td>Senior</td>
-                        <td>
-                            <button type="button" className="btn btn-link btn-sm btn-rounded">
-                                Edit
-                            </button>
-                        </td>
+                    {
+                        records.length == 0 || btnFilter.length == 0 ? (
+                            <tr>
+                                <td colSpan={7}>
+                                    <h3 style={{ color: 'red' }}>No record available</h3>
+                                </td>
+                            </tr>
+                        ) : (
+                            btnFilter.map((item, i) => (
+                                <tr key={i}>
+                                    <td>{i + 1}</td>
+                                    <td>
+                                        <div className="d-flex align-items-center">
+                                            <img
+                                                src={item.photo || "https://mdbootstrap.com/img/new/avatars/8.jpg"}
+                                                alt=""
+                                                style={{
+                                                    width: "45px",
+                                                    height: "45px",
+                                                }}
+                                                className="rounded-circle"
+                                            />
+                                            <div className="ms-3">
+                                                <p className="fw-bold mb-1">{item.name}</p>
 
-                        <td>
-                            <NavLink to={`/details`}><Button variant="success" id='action_btn'>Details</Button></NavLink>
-                            <NavLink to={`/update`}><Button variant="warning" id='action_btn'>Update</Button></NavLink>
-                            <Button variant="danger" id='action_btn'>Delete</Button>
-                        </td>
-                    </tr>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <p className="fw-normal mb-1">{item.age}</p>
+
+                                    </td>
+                                    <td>
+                                        <span className="badge badge-success rounded-pill d-inline">{item.gender}</span>
+                                    </td>
+                                    <td>{item.field}</td>
+                                    <td>
+                                        {item.description}
+                                    </td>
+
+                                    <td>
+                                        <NavLink to={`/details/${item._id}`}><Button variant="success" id='action_btn'>Details</Button></NavLink>
+                                        <NavLink to={`/update/${item._id}`}><Button variant="warning" id='action_btn'>Update</Button></NavLink>
+                                        <Button variant="danger" id='action_btn' onClick={() => handleDeleteRecord(item._id)}>Delete</Button>
+                                    </td>
+                                </tr>
+                            ))
+                        )
+                    }
 
                 </tbody>
             </table>

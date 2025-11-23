@@ -45,3 +45,7 @@ table,th,td{
 #pagination_body{
   margin: 5px;
 }
+
+#image_body{
+  border-radius: 50px;
+}
