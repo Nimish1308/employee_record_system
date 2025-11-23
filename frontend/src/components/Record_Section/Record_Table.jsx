@@ -2,7 +2,7 @@ import React from 'react'
 import { Button } from 'react-bootstrap'
 import { NavLink } from 'react-router'
 
-const Record_Table = ({ records, handleDeleteRecord, btnFilter }) => {
+const Record_Table = ({ records, handleDeleteRecord, btnFilter, indexOfFirstItem, currentIndex }) => {
     return (
         <>
             <table className="table align-middle mb-0 bg-white container" id='table_body'>
@@ -26,9 +26,9 @@ const Record_Table = ({ records, handleDeleteRecord, btnFilter }) => {
                                 </td>
                             </tr>
                         ) : (
-                            btnFilter.map((item, i) => (
+                            currentIndex.map((item, i) => (
                                 <tr key={i}>
-                                    <td>{i + 1}</td>
+                                    <td>{indexOfFirstItem + i + 1}</td>
                                     <td>
                                         <div className="d-flex align-items-center">
                                             <img

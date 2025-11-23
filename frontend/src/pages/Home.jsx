@@ -98,6 +98,23 @@ const Home = () => {
         }
     }
 
+    //Pagination Part
+    const [currentPage, setCurrentPage] = useState(1);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const indexOfLastItem = currentPage * rowsPerPage;
+    const indexOfFirstItem = indexOfLastItem - rowsPerPage;
+    const currentIndex = btnFilter.slice(indexOfFirstItem, indexOfLastItem);
+    const totalPage = Math.ceil(records.length / rowsPerPage);
+    const btnPrev = () => {
+        setCurrentPage((prev) => Math.max(prev - 1, 1))
+    }
+    const btnNext = () => {
+        setCurrentPage((next) => Math.min(next + 1, totalPage))
+    }
+    const btnNumber = (current) => {
+        setCurrentPage(current)
+    }
+
     useEffect(() => {
         getRecord();
     }, [])
@@ -105,8 +122,10 @@ const Home = () => {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path='/' element={<Records records={records} input={input} setFilter={setFilter} setInput={setInput} handleChange={handleChange} 
-                handleSubmit={handleSubmit} handleDeleteRecord={handleDeleteRecord} getFilter={getFilter} btnFilter={btnFilter}/>} />
+                <Route path='/' element={<Records records={records} input={input} setFilter={setFilter} setInput={setInput} handleChange={handleChange}
+                    handleSubmit={handleSubmit} handleDeleteRecord={handleDeleteRecord} getFilter={getFilter} btnFilter={btnFilter}
+                    currentPage={currentPage} btnPrev={btnPrev} btnNext={btnNext} totalPage={totalPage} indexOfFirstItem={indexOfFirstItem}
+                    currentIndex={currentIndex} btnNumber={btnNumber} />} />
                 <Route path='/details/:id' element={<Details URL={URL} />} />
                 <Route path='/update/:id' element={<Update URL={URL} input={input} setInput={setInput} handleChange={handleChange} />} />
             </Routes>

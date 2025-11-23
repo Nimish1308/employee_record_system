@@ -30,10 +30,10 @@ const Emp_Form = ({ children, input, setInput, handleChange, handleSubmit }) => 
                         checked={input.gender === "Male"} onChange={handleChange} />
 
                     <Form.Check type="radio" label="Female" value="Female" name='gender' id='gender' required
-                        checked={input.gender === "Male"} onChange={handleChange} />
+                        checked={input.gender === "Female"} onChange={handleChange} />
 
                     <Form.Check type="radio" label="Other" value="Other" name='gender' id='gender' required
-                        checked={input.gender === "Male"} onChange={handleChange} />
+                        checked={input.gender === "Other"} onChange={handleChange} />
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -54,7 +54,7 @@ const Emp_Form = ({ children, input, setInput, handleChange, handleSubmit }) => 
 
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Label>Upload Photo:</Form.Label>
-                    <Form.Control type="file" name="photo" onChange={handleChange}/>
+                    <Form.Control type="file" name="photo" onChange={handleChange} />
                 </Form.Group>
 
                 {/* <Button variant="primary" type="submit">
