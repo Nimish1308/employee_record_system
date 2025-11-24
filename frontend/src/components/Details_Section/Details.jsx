@@ -3,31 +3,41 @@ import React from 'react'
 import { useState } from 'react'
 import { useEffect } from 'react'
 import { Button } from 'react-bootstrap'
+import { useDispatch, useSelector } from 'react-redux'
 import { NavLink, useParams } from 'react-router'
 import { toast } from 'react-toastify'
+import { findEmpRecord } from '../../redux/empSlice'
 
 const Details = ({ URL }) => {
   const { id } = useParams();
   // //Find Employee details by id
-  const [details, setDetails] = useState([]);
+  // const [details, setDetails] = useState([]);
 
-  const getDetails = async () => {
-    try {
-      const res = await axios.get(`${URL}/findbyid/${id}`);
-      const store = res.data;
-      setDetails(store);
-      toast.success("Employee Details Fetched");
-      console.log("Employee Details Fetched");
-    } catch (error) {
-      toast.error("Failed To Fetch Details");
+  const details = useSelector((state) => state.employeeState.selectedRecord);
+  const loading = useSelector((state => state.employeeState.loading))
+  const dispatch = useDispatch();
 
-    }
-  }
+  // const getDetails = async () => {
+  //   try {
+  //     const res = await axios.get(`${URL}/findbyid/${id}`);
+  //     const store = res.data;
+  //     setDetails(store);
+  //     toast.success("Employee Details Fetched");
+  //     console.log("Employee Details Fetched");
+  //   } catch (error) {
+  //     toast.error("Failed To Fetch Details");
+
+  //   }
+  // }
 
 
   useEffect(() => {
-    getDetails();
-  }, [])
+    // getDetails();
+    dispatch(findEmpRecord(id))
+  }, [dispatch, id])
+
+  if(loading) return <h1>Loading....</h1>
+  if (!details) return <h1>No record found</h1>
   return (
     <>
       <div className="card mb-3 container" id='details_body'>
@@ -35,7 +45,7 @@ const Details = ({ URL }) => {
           <div className="col-md-4">
             <img
               src={details.photo || "https://mdbcdn.b-cdn.net/wp-content/uploads/2020/06/vertical.webp"}
-              style={{width:'100%'}}
+              style={{ width: '100%' }}
               alt="Trendy Pants and Shoes"
               className="img-fluid rounded-start"
             />

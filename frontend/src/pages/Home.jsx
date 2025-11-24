@@ -7,26 +7,31 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useEffect } from 'react';
 import { toast } from 'react-toastify';
+import { useDispatch, useSelector } from 'react-redux';
+import { createEmpRecord, deleteEmpRecord, fetchAllEmployee } from '../redux/empSlice';
 
 const Home = () => {
     const URL = process.env.REACT_APP_BACKEND_API_URL;
 
 
     //Fetch All Employee Records
-    const [records, setRecords] = useState([]);
-    const getRecord = async () => {
-        try {
-            const res = await axios.get(`${URL}/find`)
-            const store = res.data;
-            setRecords(store);
-            setFilter(store);
-            console.log("All Records Fetched Successfully");
+    // const [records, setRecords] = useState([]);
+    // const getRecord = async () => {
+    //     try {
+    //         const res = await axios.get(`${URL}/find`)
+    //         const store = res.data;
+    //         setRecords(store);
+    //         setFilter(store);
+    //         console.log("All Records Fetched Successfully");
 
-        } catch (error) {
-            console.error("Failed To Fetch All Records");
+    //     } catch (error) {
+    //         console.error("Failed To Fetch All Records");
 
-        }
-    }
+    //     }
+    // }
+
+    const { loading, records, error } = useSelector((state) => state.employeeState);
+    const dispatch = useDispatch();
 
     const [input, setInput] = useState({
         name: "",
@@ -62,10 +67,12 @@ const Home = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.post(`${URL}/create`, input);
+            // const res = await axios.post(`${URL}/create`, input);
+            dispatch(createEmpRecord(input));
             toast.success("Employee Record Created");
             console.log("Employee Record Created");
-            getRecord();
+            // getRecord();
+            dispatch(fetchAllEmployee());
         } catch (error) {
             toast.error("Record Creation Failed")
         }
@@ -76,10 +83,12 @@ const Home = () => {
     //Delete Employee Records
     const handleDeleteRecord = async (id) => {
         try {
-            const res = await axios.delete(`${URL}/delete/${id}`);
+            // const res = await axios.delete(`${URL}/delete/${id}`);
+            dispatch(deleteEmpRecord(id));
             toast.success("Employee Record Deleted");
             console.log("Employee Record Deleted");
-            getRecord();
+            // getRecord();
+            dispatch(fetchAllEmployee());
         } catch (error) {
             toast.error("Failed To Delete Record")
         }
@@ -116,8 +125,13 @@ const Home = () => {
     }
 
     useEffect(() => {
-        getRecord();
-    }, [])
+        // getRecord();
+        dispatch(fetchAllEmployee())
+    }, [dispatch])
+
+    useEffect(() => {
+        setFilter(records)
+    }, [records])
 
     return (
         <BrowserRouter>
