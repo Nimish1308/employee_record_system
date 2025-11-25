@@ -1,8 +1,10 @@
 import React from 'react'
 import { Button } from 'react-bootstrap'
 import { NavLink } from 'react-router'
+import { Table_Skeleton } from '../Skeleton_Section/Skeleton'
 
-const Record_Table = ({ records, handleDeleteRecord, btnFilter, indexOfFirstItem, currentIndex }) => {
+const Record_Table = ({ records, handleDeleteRecord, btnFilter, indexOfFirstItem, currentIndex, skeletonLoading }) => {
+
     return (
         <>
             <table className="table align-middle mb-0 bg-white container" id='table_body'>
@@ -19,7 +21,9 @@ const Record_Table = ({ records, handleDeleteRecord, btnFilter, indexOfFirstItem
                 </thead>
                 <tbody>
                     {
-                        records.length == 0 || btnFilter.length == 0 ? (
+                        skeletonLoading ? (
+                            Array(5).fill(0).map((_, i) => <Table_Skeleton key={i} />)
+                        ) : records.length == 0 || btnFilter.length == 0 ? (
                             <tr>
                                 <td colSpan={7}>
                                     <h3 style={{ color: 'red' }}>No record available</h3>

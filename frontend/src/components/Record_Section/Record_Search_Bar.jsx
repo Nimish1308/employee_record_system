@@ -1,10 +1,11 @@
 import React from 'react'
+import { Filter_Search_Bar_Skeleton } from '../Skeleton_Section/Skeleton';
 
-const Record_Search_Bar = ({ btnFilter, setFilter, records }) => {
+const Record_Search_Bar = ({ btnFilter, setFilter, records, skeletonLoading }) => {
     const handleSearchBar = (e) => {
         const text = e.target.value.toLowerCase();
         console.log(text);
-        
+
         try {
             if (text == "") {
                 setFilter(records)
@@ -23,8 +24,16 @@ const Record_Search_Bar = ({ btnFilter, setFilter, records }) => {
     }
     return (
         <>
-            <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" id='search_body'
-                onChange={handleSearchBar} />
+            {
+                skeletonLoading ? (
+                    Array(1).fill(0).map((_, i) => <Filter_Search_Bar_Skeleton key={i} />)
+                ) : (
+               <>
+                <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" id='search_body'
+                    onChange={handleSearchBar} />
+               </>
+                )
+            }
         </>
     )
 }
